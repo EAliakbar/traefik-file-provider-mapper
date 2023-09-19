@@ -17,6 +17,8 @@ services:
   traefik-file-provider-mapper:
     image: ghcr.io/ealiakbar/traefik-file-provider-mapper
     restart: unless-stopped
+    volumes:
+      - "/data/coolify/proxy/dynamic/:/input"
     environment:
       # All the following are optional
 

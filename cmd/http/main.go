@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"net/http"
 
@@ -9,14 +10,15 @@ import (
 )
 
 func main() {
-	inputPath := "sample-inputs/"
+	inputPath := flag.String("i", "sample-inputs/", "Directory of Traefik configs")
+	flag.Parse()
 	mapperConfig := internal.ReadMapperConfigFromENV()
 
 	// Set up an HTTP endpoint to serve the merged YAML data.
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		jsonData := ProcessConfigs(inputPath, mapperConfig)
+		jsonData := ProcessConfigs(*inputPath, mapperConfig)
 		w.Write(jsonData)
 	})
 
