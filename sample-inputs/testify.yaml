@@ -1,0 +1,22 @@
+http:
+  routers:
+    testify-http:
+      entryPoints:
+        - http
+      service: testify
+      rule: Host(`testify.example.com`)
+      middlewares:
+        - redirect-to-https@docker
+    testify-https:
+      entryPoints:
+        - https
+      service: testify
+      rule: Host(`testify.example.com`)
+      tls:
+        certresolver: letsencrypt
+  services:
+    testify:
+      loadBalancer:
+        servers:
+          -
+            url: 'http://testify:80'

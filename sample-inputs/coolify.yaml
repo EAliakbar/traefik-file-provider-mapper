@@ -1,0 +1,22 @@
+http:
+  routers:
+    coolify-http:
+      entryPoints:
+        - http
+      service: coolify
+      rule: Host(`coolify.example.com`)
+      middlewares:
+        - redirect-to-https@docker
+    coolify-https:
+      entryPoints:
+        - https
+      service: coolify
+      rule: Host(`coolify.example.com`)
+      tls:
+        certresolver: letsencrypt
+  services:
+    coolify:
+      loadBalancer:
+        servers:
+          -
+            url: 'http://coolify:80'
