@@ -12,7 +12,7 @@ RUN go mod download
 COPY . ./
 
 # Build the binary.
-RUN go build -v -o server cmd/http/main.go
+RUN CGO_ENABLED=0 go build -v -o server cmd/http/main.go
 
 # Use the Distroless base image
 FROM gcr.io/distroless/static-debian12
